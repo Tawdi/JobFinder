@@ -1,10 +1,17 @@
 <header class="bg-primary text-light shadow-sm border-b border-secondary">
   <nav class="container mx-auto flex items-center justify-between py-4 px-4">
-    <a routerLink="/" class="text-xl font-bold text-highlight">
-      JobFinder
+    <a routerLink="/" class="flex gap-1 text-xl font-bold text-highlight">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+        <path fill-rule="evenodd"
+              d="M7.5 5.25a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0 1 12 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 0 1 7.5 5.455V5.25Zm7.5 0v.09a49.488 49.488 0 0 0-6 0v-.09a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5Zm-3 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+              clip-rule="evenodd"/>
+        <path
+          d="M3 18.4v-2.796a4.3 4.3 0 0 0 .713.31A26.226 26.226 0 0 0 12 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 0 1-6.477-.427C4.047 21.128 3 19.852 3 18.4Z"/>
+      </svg>
+      <span><span class="text-light">Job</span>Finder</span>
     </a>
 
-    <ul class="flex items-center gap-6">
+    <ul class="hidden md:flex items-center gap-6">
       <li><a routerLink="/jobs" class="hover:text-highlight">Jobs</a></li>
       <li><a routerLink="/favorites" class="hover:text-highlight">Favorites</a></li>
       <li><a routerLink="/applications" class="hover:text-highlight">Applications</a></li>
@@ -16,5 +23,77 @@
         </a>
       </li>
     </ul>
+
+    <!-- Mobile Hamburger -->
+    <button class="md:hidden text-light focus:outline-none " (click)="mobileOpen = !mobileOpen">
+      @if (!mobileOpen) {
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+             stroke="currentColor"
+             class="size-7 ">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+        </svg>
+      } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+             stroke="currentColor"
+             class="size-7 ">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      }
+
+    </button>
+
+
+
+
   </nav>
+
+  <!-- Mobile Menu -->
+  @if (mobileOpen) {
+    <div class="md:hidden bg-primary text-light border-t border-secondary animate-fade-in">
+      <ul class="flex flex-col py-2">
+        <li>
+          <a routerLink="/jobs"
+             (click)="mobileOpen = false"
+             class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
+            Jobs
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/favorites"
+             (click)="mobileOpen = false"
+             class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
+            Favorites
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/applications"
+             (click)="mobileOpen = false"
+             class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
+            Applications
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/profile"
+             (click)="mobileOpen = false"
+             class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
+            Profile
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/login"
+             (click)="mobileOpen = false"
+             class="block w-full px-6 py-3 text-highlight font-semibold hover:bg-secondary/20 hover:text-white transition rounded">
+            Login
+          </a>
+        </li>
+      </ul>
+
+    </div>
+
+  }
+
 </header>
