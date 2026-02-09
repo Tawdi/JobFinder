@@ -1,0 +1,43 @@
+<div class="flex flex-col gap-1 animate-slide-up" [class.w-full]="fullWidth">
+
+  @if (label) {
+    <label class="text-primary font-medium">
+      {{ label }}
+    </label>
+  }
+
+  <div class="relative flex items-center">
+
+    @if (iconLeft) {
+      <span class="absolute left-3 flex items-center">
+        <ng-content select="[icon-left]"></ng-content>
+      </span>
+    }
+
+    <input
+      [type]="type"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      class="
+        w-full px-4 py-2 rounded border border-secondary bg-white text-primary
+        focus:outline-none focus:ring-2 focus:ring-accent transition
+        {{ iconLeft ? 'pl-10' : '' }}
+        {{ iconRight ? 'pr-10' : '' }}
+      "
+    />
+
+    @if (iconRight) {
+      <span class="absolute right-3 flex items-center">
+        <ng-content select="[icon-right]"></ng-content>
+      </span>
+    }
+
+  </div>
+
+  @if (error) {
+    <p class="text-accent text-sm animate-slide-down">
+      {{ error }}
+    </p>
+  }
+
+</div>
