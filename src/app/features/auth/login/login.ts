@@ -2,11 +2,12 @@ import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {UiInput} from '../../../shared/components/ui-input/ui-input';
 import {UiButton} from '../../../shared/components/ui-button/ui-button';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, UiInput, UiButton],
+  imports: [ReactiveFormsModule, UiInput, UiButton, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -28,6 +29,8 @@ form :any
       this.form.markAllAsTouched();
       return;
     }
+
+    console.log('Login form submitted:', this.form.value);
   }
 
   get email() {
