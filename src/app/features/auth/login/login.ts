@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {UiInput} from '../../../shared/components/ui-input/ui-input';
 import {UiButton} from '../../../shared/components/ui-button/ui-button';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {AuthService} from '../../../core/services/auth';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,16 @@ import {RouterLink} from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
-form :any
-  constructor(private fb: FormBuilder) {
+  form: any;
+  isLoading= signal<boolean>(false);
+  errorMessage= signal<string>("");
+
+
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
 
     this.form = this.fb.group(
       {
@@ -29,6 +38,28 @@ form :any
       this.form.markAllAsTouched();
       return;
     }
+    this.isLoading.set(true);
+    this.errorMessage.set("");
+    const credentials = {
+      email: this.form.value.email,
+      password: this.form.value.password,
+    };
+
+    this.authService.login(credentials).subscribe(
+      {
+        next: (user) => {
+          this.isLoading.set(false);
+          console.log('Login successful:', user);
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          this.isLoading.set(false);
+          this.errorMessage.set(error.message || 'Login failed. Please try again.');
+          console.error('Login error:', error);
+        },
+
+      }
+    )
 
     console.log('Login form submitted:', this.form.value);
   }

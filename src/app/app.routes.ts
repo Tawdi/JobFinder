@@ -1,3 +1,48 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {path: '', redirectTo: 'jobs', pathMatch: 'full'},
+
+  // Auth
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login').then(m => m.Login)
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/register/register').then(m => m.Register)
+  },
+
+  // Jobs
+  {
+    path: 'jobs',
+    loadComponent: () =>
+      import('./features/jobs/search/search').then(m => m.Search)
+  },
+  {
+    path: 'jobs/:id',
+    loadComponent: () =>
+      import('./features/jobs/job-details/job-details').then(m => m.JobDetails)
+  },
+
+  {
+    path: 'favorites',
+    loadComponent: () =>
+      import('./features/favorites/favorites').then(m => m.Favorites)
+  },
+
+  {
+    path: 'applications',
+    loadComponent: () =>
+      import('./features/applications/applications').then(m => m.Applications)
+  },
+
+  // Profile (protected)
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./features/profile/profile').then(m => m.Profile)
+  }
+];

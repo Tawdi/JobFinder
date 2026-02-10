@@ -1,12 +1,15 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {UiInput} from '../../../shared/components/ui-input/ui-input';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {UiButton} from '../../../shared/components/ui-button/ui-button';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
+import {AuthService} from '../../../core/services/auth';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-register',
   imports: [
+    ReactiveFormsModule,
     UiInput,
     UiButton,
     RouterLink
@@ -17,8 +20,14 @@ import {RouterLink} from '@angular/router';
 export class Register {
 
   form: any;
+  isLoading = signal<boolean>(false);
+  errorMessage = signal<string>("");
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.form = this.fb.group({
         name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
@@ -32,7 +41,14 @@ export class Register {
   passwordsMatchValidator(form: FormGroup) {
     const pass = form.get('password')?.value;
     const confirm = form.get('confirmPassword')?.value;
-    return pass === confirm ? null : {passwordsMismatch: true};
+
+    if (pass === confirm) {
+      form.get('confirmPassword')?.setErrors(null);
+      return null;
+    } else {
+      form.get('confirmPassword')?.setErrors({passwordsMismatch: true});
+      return {passwordsMismatch: true};
+    }
   }
 
   register() {
@@ -40,12 +56,39 @@ export class Register {
       this.form.markAllAsTouched();
       return;
     }
+
+    this.isLoading.set(true);
+    this.errorMessage.set("");
+
+    const credentials = {
+      name: this.form.value.name,
+      email: this.form.value.email,
+      password: this.form.value.password
+    }
+
+    this.authService.register(credentials).pipe(
+      finalize(()=>{
+        this.isLoading.set(false);
+      })
+    ).subscribe({
+      next:(user)=>{
+        console.log('Registration successful:', user);
+        this.router.navigate(['/login']);
+      },
+      error:(error)=>{
+        this.errorMessage.set(error.message || 'Registration failed. Please try again.');
+        console.error('Registration error:', error);
+      }
+    })
+
+
     console.log('Register form submitted:', this.form.value);
   }
 
   get name() {
     return this.form.controls.name;
   }
+
   get email() {
     return this.form.controls.email;
   }

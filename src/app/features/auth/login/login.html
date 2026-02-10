@@ -13,6 +13,7 @@
         label="Email"
         placeholder="Enter your email"
         [iconLeft]="true"
+        [formControl]="email"
         [error]="email.invalid && email.touched ? 'Please enter a valid email' : ''"
       >
         <svg icon-left xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -28,6 +29,7 @@
         type="password"
         placeholder="Enter your password"
         [iconLeft]="true"
+        [formControl]="password"
         [error]="password.invalid && password.touched ? 'Password must be at least 6 characters' : ''"
       >
         <svg icon-left xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -38,9 +40,16 @@
         </svg>
       </ui-input>
 
+      @if (errorMessage()) {
+        <div class="p-3 bg-accent/10 border border-accent text-accent rounded-md text-sm animate-slide-down">
+          {{ errorMessage() }}
+        </div>
+      }
+
       <!-- Submit Button -->
       <ui-button
         variant="primary"
+        [loading]="isLoading()"
         [fullWidth]="true"
         size="md"
         (click)="submit()"
@@ -82,7 +91,5 @@
       </p>
 
     </div>
-
   </div>
-
 </div>
