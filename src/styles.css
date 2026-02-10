@@ -1,3 +1,78 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+
+
+@theme {
+  --color-primary: #325947;
+  --color-secondary: #B3BFAA;
+  --color-light: #E7F2DC;
+  --color-accent: #898C1F;
+  --color-highlight: #D5D973;
+
+  /* Animation utilities */
+  --animate-fade-in: fade-in 0.4s ease-out forwards;
+  --animate-slide-up: slide-up 0.45s ease-out forwards;
+  --animate-slide-down: slide-down 0.45s ease-out forwards;
+  --animate-scale-in: scale-in 0.35s ease-out forwards;
+  --animate-pulse-soft: pulse-soft 1.5s ease-in-out infinite;
+}
+
+/* Global body styling */
+body {
+  background-color: var(--color-light);
+  color: var(--color-primary);
+}
+
+
+/* Global animations */
+@keyframes fade-in {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-20px);
+    opacity: 0
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0
+  }
+  to {
+    transform: scale(1);
+    opacity: 1
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1
+  }
+  50% {
+    opacity: 0.6
+  }
+}
