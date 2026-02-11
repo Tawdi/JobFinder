@@ -1,0 +1,24 @@
+<div class="bg-white p-8 rounded-xl border border-secondary/20 shadow-sm h-[calc(100vh-20rem)] overflow-y-auto">
+
+  <h2 class="text-2xl font-bold mb-1">{{ job.title }}</h2>
+  <p class="text-accent mb-4">{{ job.company }} • {{ job.location }}</p>
+
+  <ui-button variant="primary" size="md" class="mb-6">Apply Now</ui-button>
+
+  <h3 class="text-xl font-semibold mb-3">Job Details</h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <div>
+      <p class="text-accent text-sm">Publish date</p>
+      <p class="font-semibold">{{ job.published | date }}</p>
+    </div>
+    <div>
+      <p class="text-accent text-sm">Location</p>
+      <p class="font-semibold">{{ job.location }}</p>
+    </div>
+  </div>
+
+  <h3 class="text-xl font-semibold mb-3">Full Job Description</h3>
+  <div class="leading-relaxed prose max-w-none" [innerHTML]="job.description"></div>
+
+</div>
