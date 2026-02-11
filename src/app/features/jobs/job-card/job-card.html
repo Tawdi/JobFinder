@@ -1,0 +1,10 @@
+<div class="bg-white mb-5 p-5 rounded-xl border shadow-sm hover:shadow-md transition cursor-pointer"
+     [class.border-2]="isSelected"
+     [class.border-primary]="isSelected"
+     [class.border-secondary]="!isSelected"
+(click)="onCardClick()">
+  <p class="text-highlight text-sm font-semibold mb-1">{{job.platformName}}</p>
+  <h3 class="text-lg font-semibold">{{ job.title }}</h3>
+  <p class="text-secondary">{{job.company}} • {{ job.location}}</p>
+  <p class="text-primary font-semibold mt-2">{{job.published | date}}</p>
+</div>
