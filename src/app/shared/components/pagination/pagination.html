@@ -1,0 +1,29 @@
+<div class="flex items-center justify-between py-4">
+  <div class="flex items-center gap-2">
+        <span class="text-sm text-secondary">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+    <span class="text-sm text-secondary mx-2">•</span>
+    <span class="text-sm text-secondary">
+          {{ totalItems }} total jobs
+        </span>
+  </div>
+
+  <div class="flex gap-2">
+    <button
+      (click)="onPrevious.emit()"
+      [disabled]="currentPage === 1"
+      class="px-4 py-2 text-sm bg-white border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+    >
+      Previous
+    </button>
+
+    <button
+      (click)="onNext.emit()"
+      [disabled]="currentPage === totalPages"
+      class="px-4 py-2 text-sm bg-white border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+    >
+      Next
+    </button>
+  </div>
+</div>

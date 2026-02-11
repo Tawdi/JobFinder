@@ -1,9 +1,35 @@
-<div class="space-y-4 h-[calc(100vh-20rem)] overflow-y-auto pr-2">
-  @for (job of jobs; track job.id) {
-    <app-job-card
-      [job]="job"
-      [isSelected]="selectedJobId === job.id"
-      (jobSelected)="onJobSelected($event)"
-    />
+<div class="h-full flex flex-col job-list-container">
+  @if (isLoading) {
+    <div class="flex items-center justify-center h-64">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  } @else {
+    <!-- Job list -->
+    <div class="flex-1 overflow-y-auto pr-2 space-y-4">
+      @for (job of jobs; track job.id) {
+        <app-job-card
+          [job]="job"
+          [isSelected]="selectedJobId === job.id"
+          (jobSelected)="onJobSelected($event)"
+        />
+      }
+
+      @if (jobs.length === 0) {
+        <div class="text-center py-8 text-secondary">
+          No jobs found
+        </div>
+      }
+    </div>
+
+    <!-- Simple Pagination -->
+    @if (totalPages > 0) {
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        [totalItems]="totalItems"
+        (onPrevious)="onPrevious.emit()"
+        (onNext)="onNext.emit()"
+      />
+    }
   }
 </div>
