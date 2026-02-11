@@ -1,0 +1,9 @@
+<div class="space-y-4 h-[calc(100vh-20rem)] overflow-y-auto pr-2">
+  @for (job of jobs; track job.id) {
+    <app-job-card
+      [job]="job"
+      [isSelected]="selectedJobId === job.id"
+      (jobSelected)="onJobSelected($event)"
+    />
+  }
+</div>
