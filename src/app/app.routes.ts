@@ -1,7 +1,8 @@
 import {Routes} from '@angular/router';
 
 export const routes: Routes = [
-  {path: '', redirectTo: 'jobs', pathMatch: 'full'},
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+
 
   // Auth
   {
@@ -14,10 +15,17 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/register/register').then(m => m.Register)
   },
+  // Home
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./features/home/home').then(m => m.Home)
+  },
 
   // Jobs
+  {path: 'jobs', redirectTo: 'search', pathMatch: 'full'},
   {
-    path: 'jobs',
+    path: 'search',
     loadComponent: () =>
       import('./features/jobs/search/search').then(m => m.Search)
   },
