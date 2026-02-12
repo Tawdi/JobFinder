@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import {Component} from '@angular/core';
 import {Layout} from './core/layout/layout';
 
 @Component({
@@ -8,5 +8,5 @@ import {Layout} from './core/layout/layout';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('job-finder');
+
 }

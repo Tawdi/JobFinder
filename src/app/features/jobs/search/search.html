@@ -1,0 +1,63 @@
+<section class="bg-light pb-10 px-6 h-[calc(100vh-10rem)] flex flex-col">
+  <app-search-filters
+    [category]="searchCategory()"
+    [level]="searchLevel()"
+    [location]="searchLocation()"
+    [sortOrder]="descending() ? 'descending' : 'ascending'"
+    (onCategoryChange)="searchByCategory($event)"
+    (onLevelChange)="searchByLevel($event)"
+    (onLocationChange)="searchByLocation($event)"
+    (onSortChange)="setSortOrder($event)"
+    (onClear)="clearSearch()"
+  />
+
+  <div class="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-1 flex-1 min-h-0">
+    <!-- Job List Column with Pagination -->
+    <div class="h-full flex flex-col lg:overflow-hidden">
+      @if (errorMessage()) {
+        <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-4">
+          {{ errorMessage() }}
+          <button
+            (click)="loadJobs(currentPage())"
+            class="ml-2 text-red-700 underline hover:no-underline"
+          >
+            Try again
+          </button>
+        </div>
+      }
+
+      <app-job-list
+        [jobs]="joblist()"
+        [selectedJobId]="selectedJob()?.id || null"
+        [isLoading]="isLoading()"
+        [currentPage]="currentPage()"
+        [totalPages]="totalPages()"
+        [totalItems]="totalJobs()"
+        (jobSelected)="onJobSelected($event)"
+        (onPrevious)="onPreviousPage()"
+        (onNext)="onNextPage()"
+        class="flex-1 min-h-0"
+      />
+    </div>
+
+    <!-- Job Details Column -->
+    @if (selectedJob()) {
+      <app-job-details
+        [job]="selectedJob()!"
+        class="lg:col-span-2 h-full"
+      />
+    } @else {
+      <div
+        class="lg:col-span-2 h-full bg-white p-8 rounded-xl border border-secondary/20 shadow-sm flex items-center justify-center">
+        @if (isLoading()) {
+          <div class="flex flex-col items-center gap-4">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <p class="text-secondary">Loading jobs...</p>
+          </div>
+        } @else {
+          <p class="text-secondary">Select a job to view details</p>
+        }
+      </div>
+    }
+  </div>
+</section>
