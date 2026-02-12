@@ -26,10 +26,15 @@ export class Search implements OnInit {
   errorMessage = signal("");
 
   // Pagination signals
-  // Pagination signals
   currentPage = signal(1);
   totalPages = signal(0);
   totalJobs = signal(0);
+
+  // Search filter signals
+  searchCategory = signal<string>('');
+  searchLevel = signal<string>('');
+  searchLocation = signal<string>('');
+  descending = signal<boolean>(true);
 
   ngOnInit() {
 
@@ -38,12 +43,29 @@ export class Search implements OnInit {
 
   loadJobs(page: number = 1) {
 
+    const params: any = {
+      page: page === 0 ? 0 : page - 1,
+      descending: this.descending()
+    };
+
+    if (this.searchCategory()) {
+      params.category = this.searchCategory();
+    }
+
+    if (this.searchLevel()) {
+      params.level = this.searchLevel();
+    }
+
+    if (this.searchLocation()) {
+      params.location = this.searchLocation();
+    }
+
     this.isLoading.set(true);
     this.errorMessage.set("");
     this.currentPage.set(page);
 
     // THEMUSE
-    this.jobsService.getJobs('themuse', {page})
+    this.jobsService.getJobs('themuse', params)
       .subscribe({
         next: (res: any) => {
           const jobs = res.results.map((j: any) => JobAdapter.fromMuse(j));
@@ -52,6 +74,8 @@ export class Search implements OnInit {
 
           if (jobs.length > 0) {
             this.selectedJob.set(jobs[0]);
+          } else {
+            this.selectedJob.set(null);
           }
 
           this.totalPages.set(res.page_count);
@@ -84,6 +108,36 @@ export class Search implements OnInit {
     //   console.log('arbeitnow', jobs);
     // });
   }
+
+  // Search methods
+  searchByCategory(category: string) {
+    this.searchCategory.set(category);
+    this.loadJobs(1);
+  }
+
+  searchByLevel(level: string) {
+    this.searchLevel.set(level);
+    this.loadJobs(1);
+  }
+
+  searchByLocation(location: string) {
+    this.searchLocation.set(location);
+    this.loadJobs(1);
+  }
+
+  setSortOrder(descending: boolean) {
+    this.descending.set(descending);
+    this.loadJobs(this.currentPage()); // Keep current page
+  }
+
+  clearSearch() {
+    this.searchCategory.set('');
+    this.searchLevel.set('');
+    this.searchLocation.set('');
+    this.descending.set(true);
+    this.loadJobs(1);
+  }
+
   onJobSelected(job: Job) {
     this.selectedJob.set(job);
   }

@@ -1,30 +1,92 @@
-<div class="container mx-auto mb-2">
-  <div class="bg-white border border-secondary/20 rounded-xl shadow-sm p-4 flex flex-wrap gap-4 items-center">
+<div class="container bg-white p-6 rounded-xl border border-secondary/20 shadow-sm mx-auto mb-6">
 
-    <ui-input placeholder="Job title, skill, or company" class="flex-1"></ui-input>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-    <ui-input placeholder="Location" class="w-48"></ui-input>
+    <!-- Category -->
+    <div>
+      <label class="block text-sm font-semibold text-secondary mb-2">
+        Category
+      </label>
 
-    <select class="px-4 py-2 border border-secondary rounded-lg bg-light text-secondary hover:border-primary transition">
-      <option>Company</option>
-      <option>TechCorp</option>
-      <option>Creative Studio</option>
-    </select>
+      <select
+        [(ngModel)]="category"
+        (ngModelChange)="onCategoryChange.emit($event)"
+        class="w-full px-4 py-2 border border-secondary/40 rounded-lg bg-light text-secondary
+               focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+      >
+        <option value="">All Categories</option>
+        <option value="Engineering">Engineering</option>
+        <option value="Design">Design</option>
+        <option value="Product">Product</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Sales">Sales</option>
+        <option value="Data Science">Data Science</option>
+      </select>
+    </div>
 
-    <select class="px-4 py-2 border border-secondary rounded-lg bg-light text-secondary hover:border-primary transition">
-      <option>Job Type</option>
-      <option>Full-Time</option>
-      <option>Part-Time</option>
-      <option>Internship</option>
-    </select>
+    <!-- Level -->
+    <div>
+      <label class="block text-sm font-semibold text-secondary mb-2">
+        Experience Level
+      </label>
 
-    <select class="px-4 py-2 border border-secondary rounded-lg bg-light text-secondary hover:border-primary transition">
-      <option>Date Posted</option>
-      <option>Last 24 hours</option>
-      <option>Last 7 days</option>
-      <option>Last 30 days</option>
-    </select>
+      <select
+        [(ngModel)]="level"
+        (ngModelChange)="onLevelChange.emit($event)"
+        class="w-full px-4 py-2 border border-secondary/40 rounded-lg bg-light text-secondary
+               focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+      >
+        <option value="">All Levels</option>
+        <option value="Entry Level">Entry Level</option>
+        <option value="Mid Level">Mid Level</option>
+        <option value="Senior Level">Senior Level</option>
+        <option value="Internship">Internship</option>
+      </select>
+    </div>
 
-    <ui-button variant="primary" size="md">Search</ui-button>
+    <!-- Location -->
+    <div>
+      <label class="block text-sm font-semibold text-secondary mb-2">
+        Location
+      </label>
+
+      <ui-input
+        placeholder="City, State, or Remote"
+        [(ngModel)]="location"
+        (ngModelChange)="onLocationChange.emit($event)"
+        class="w-full"
+      ></ui-input>
+    </div>
+
+    <!-- Sort -->
+    <div>
+      <label class="block text-sm font-semibold text-secondary mb-2">
+        Sort Order
+      </label>
+
+      <select
+        [(ngModel)]="sortOrder"
+        (ngModelChange)="onSortChange.emit($event === 'descending')"
+        class="w-full px-4 py-2 border border-secondary/40 rounded-lg bg-light text-secondary
+               focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+      >
+        <option value="descending">Newest First</option>
+        <option value="ascending">Oldest First</option>
+      </select>
+    </div>
+
   </div>
+
+  <!-- Clear Filters -->
+  <div class="flex justify-end mt-6">
+    <ui-button
+      variant="outline"
+      size="sm"
+      (click)="onClear.emit()"
+      class="text-secondary hover:text-primary transition"
+    >
+      Clear all filters
+    </ui-button>
+  </div>
+
 </div>

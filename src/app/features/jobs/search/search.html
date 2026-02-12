@@ -1,9 +1,19 @@
 <section class="bg-light pb-10 px-6 h-[calc(100vh-10rem)] flex flex-col">
-  <app-search-filters></app-search-filters>
+  <app-search-filters
+    [category]="searchCategory()"
+    [level]="searchLevel()"
+    [location]="searchLocation()"
+    [sortOrder]="descending() ? 'descending' : 'ascending'"
+    (onCategoryChange)="searchByCategory($event)"
+    (onLevelChange)="searchByLevel($event)"
+    (onLocationChange)="searchByLocation($event)"
+    (onSortChange)="setSortOrder($event)"
+    (onClear)="clearSearch()"
+  />
 
   <div class="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-1 flex-1 min-h-0">
     <!-- Job List Column with Pagination -->
-    <div class="h-full flex flex-col overflow-hidden">
+    <div class="h-full flex flex-col lg:overflow-hidden">
       @if (errorMessage()) {
         <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-4">
           {{ errorMessage() }}
@@ -37,7 +47,8 @@
         class="lg:col-span-2 h-full"
       />
     } @else {
-      <div class="lg:col-span-2 h-full bg-white p-8 rounded-xl border border-secondary/20 shadow-sm flex items-center justify-center">
+      <div
+        class="lg:col-span-2 h-full bg-white p-8 rounded-xl border border-secondary/20 shadow-sm flex items-center justify-center">
         @if (isLoading()) {
           <div class="flex flex-col items-center gap-4">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
