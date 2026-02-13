@@ -1,27 +1,32 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners} from '@angular/core';
+import {provideRouter} from '@angular/router';
 
-import { routes } from './app.routes';
-import { provideStore } from '@ngrx/store';
-import { provideEffects } from '@ngrx/effects';
+import {routes} from './app.routes';
+import {provideStore} from '@ngrx/store';
+import {provideEffects} from '@ngrx/effects';
 import {jobsReducer} from './core/store/reducers/jobs.reducer';
 import {JobsEffects} from './core/store/effects/jobs.effect';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
+import {provideStoreDevtools} from '@ngrx/store-devtools';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import {authInterceptor} from './core/interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideStore({
-        jobs: jobsReducer,
+      jobs: jobsReducer,
     }),
     provideEffects(JobsEffects),
     provideStoreDevtools({
       maxAge: 25,
-      logOnly: !isDevMode() ,
+      logOnly: !isDevMode(),
       autoPause: true,
       trace: false,
       traceLimit: 75,
     })
-]
+  ]
 };

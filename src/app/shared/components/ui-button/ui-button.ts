@@ -8,7 +8,7 @@ import {Component, Input} from '@angular/core';
   styleUrl: './ui-button.css',
 })
 export class UiButton {
-  @Input() variant: 'primary' | 'secondary' | 'outline' | 'accent' = 'primary';
+  @Input() variant: 'primary' | 'secondary' | 'outline' | 'accent' | 'danger' = 'primary';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() fullWidth = false;
   @Input() disabled = false;
