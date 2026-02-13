@@ -5,6 +5,7 @@ import {UiButton} from '../../../shared/components/ui-button/ui-button';
 import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '../../../core/services/auth';
 import {finalize} from 'rxjs';
+import {ToastService} from '../../../core/services/toast';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,8 @@ export class Register {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService,
   ) {
     this.form = this.fb.group({
         name: ['', [Validators.required]],
@@ -67,15 +69,16 @@ export class Register {
     }
 
     this.authService.register(credentials).pipe(
-      finalize(()=>{
+      finalize(() => {
         this.isLoading.set(false);
       })
     ).subscribe({
-      next:(user)=>{
+      next: (user) => {
         console.log('Registration successful:', user);
         this.router.navigate(['/login']);
+        this.toast.show('Account created! You can login now.', 'success');
       },
-      error:(error)=>{
+      error: (error) => {
         this.errorMessage.set(error.message || 'Registration failed. Please try again.');
         console.error('Registration error:', error);
       }
