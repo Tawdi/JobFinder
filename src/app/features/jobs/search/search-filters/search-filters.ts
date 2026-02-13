@@ -14,9 +14,9 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './search-filters.css',
 })
 export class SearchFilters {
-  @Input() category: string = '';
-  @Input() level: string = '';
-  @Input() location: string = '';
+  @Input() category: string | null = '';
+  @Input() level: string | null = '';
+  @Input() location: string | null = '';
   @Input() sortOrder: string = 'descending';
 
   @Output() onCategoryChange = new EventEmitter<string>();
