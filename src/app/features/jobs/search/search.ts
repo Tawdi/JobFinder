@@ -1,14 +1,21 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+// src/app/features/jobs/search/search.ts
+import {Component, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {CommonModule} from '@angular/common';
 import {SearchFilters} from './search-filters/search-filters';
 import {JobList} from '../job-list/job-list';
 import {JobDetails} from '../job-details/job-details';
-import {JobsService} from '../../../core/services/jobs';
-import {JobAdapter} from '../../../core/adapters/job-adapter';
 import {Job} from '../../../core/models/job.model';
+import {AppState} from '../../../core/store/reducers';
+import * as JobsActions from '../../../core/store/actions/jobs.action';
+import * as JobsSelectors from '../../../core/store/selectors/jobs.selector';
 
 @Component({
   selector: 'app-search',
+  standalone: true,
   imports: [
+    CommonModule,
     SearchFilters,
     JobList,
     JobDetails
@@ -18,153 +25,81 @@ import {Job} from '../../../core/models/job.model';
 })
 export class Search implements OnInit {
 
-  private jobsService = inject(JobsService);
+  // Observables from store
+  jobs$: Observable<Job[]>;
+  selectedJob$: Observable<Job | null>;
+  isLoading$: Observable<boolean>;
+  errorMessage$: Observable<string | null>;
+  currentPage$: Observable<number>;
+  totalPages$: Observable<number>;
+  totalJobs$: Observable<number>;
+  searchCategory$: Observable<string>;
+  searchLevel$: Observable<string>;
+  searchLocation$: Observable<string>;
+  sortOrder$: Observable<boolean>;
+  hasNextPage$: Observable<boolean>;
+  hasPreviousPage$: Observable<boolean>;
 
-  joblist = signal<Job[]>([]);
-  selectedJob = signal<Job | null>(null);
-  isLoading = signal(false);
-  errorMessage = signal("");
-
-  // Pagination signals
-  currentPage = signal(1);
-  totalPages = signal(0);
-  totalJobs = signal(0);
-
-  // Search filter signals
-  searchCategory = signal<string>('');
-  searchLevel = signal<string>('');
-  searchLocation = signal<string>('');
-  descending = signal<boolean>(true);
-
-  ngOnInit() {
-
-    this.loadJobs()
+  constructor(private store: Store<AppState>) {
+    // Initialize selectors
+    this.jobs$ = this.store.select(JobsSelectors.selectAllJobs);
+    this.selectedJob$ = this.store.select(JobsSelectors.selectSelectedJob);
+    this.isLoading$ = this.store.select(JobsSelectors.selectJobsLoading);
+    this.errorMessage$ = this.store.select(JobsSelectors.selectJobsError);
+    this.currentPage$ = this.store.select(JobsSelectors.selectCurrentPage);
+    this.totalPages$ = this.store.select(JobsSelectors.selectTotalPages);
+    this.totalJobs$ = this.store.select(JobsSelectors.selectTotalJobs);
+    this.searchCategory$ = this.store.select(JobsSelectors.selectSearchCategory);
+    this.searchLevel$ = this.store.select(JobsSelectors.selectSearchLevel);
+    this.searchLocation$ = this.store.select(JobsSelectors.selectSearchLocation);
+    this.sortOrder$ = this.store.select(JobsSelectors.selectSortOrder);
+    this.hasNextPage$ = this.store.select(JobsSelectors.selectHasNextPage);
+    this.hasPreviousPage$ = this.store.select(JobsSelectors.selectHasPreviousPage);
   }
 
-  loadJobs(page: number = 1) {
-
-    const params: any = {
-      page: page === 0 ? 0 : page - 1,
-      descending: this.descending()
-    };
-
-    if (this.searchCategory()) {
-      params.category = this.searchCategory();
-    }
-
-    if (this.searchLevel()) {
-      params.level = this.searchLevel();
-    }
-
-    if (this.searchLocation()) {
-      params.location = this.searchLocation();
-    }
-
-    this.isLoading.set(true);
-    this.errorMessage.set("");
-    this.currentPage.set(page);
-
-    // THEMUSE
-    this.jobsService.getJobs('themuse', params)
-      .subscribe({
-        next: (res: any) => {
-          const jobs = res.results.map((j: any) => JobAdapter.fromMuse(j));
-          // console.log(jobs)
-          this.joblist.set(jobs);
-
-          if (jobs.length > 0) {
-            this.selectedJob.set(jobs[0]);
-          } else {
-            this.selectedJob.set(null);
-          }
-
-          this.totalPages.set(res.page_count);
-          this.totalJobs.set(res.total || 0);
-
-          this.isLoading.set(false);
-          this.errorMessage.set("");
-        },
-        error: (err) => {
-          this.isLoading.set(false);
-          this.errorMessage.set("Failed to load jobs");
-        }
-      });
-
-    // // ADZUNA
-    // this.jobsService.getJobs('adzuna', { country: 'us', page: 1 }).subscribe((res: any) => {
-    //   const jobs = res.results.map((j: any) => JobAdapter.fromAdzuna(j));
-    //   console.log('adzuna', jobs);
-    // });
-    //
-    // // USAJOBS
-    // this.jobsService.getJobs('usajobs', { Keyword: 'developer' }).subscribe((res: any) => {
-    //   const jobs = res.SearchResult.SearchResultItems.map((j: any) => JobAdapter.fromUSA(j));
-    //   console.log('usajobs', jobs);
-    // });
-    //
-    // // ARBEITNOW
-    // this.jobsService.getJobs('arbeitnow', { remote: true }).subscribe((res: any) => {
-    //   const jobs = res.data.map((j: any) => JobAdapter.fromArbeit(j));
-    //   console.log('arbeitnow', jobs);
-    // });
+  ngOnInit() {
+    // Load initial jobs
+    this.store.dispatch(JobsActions.loadJobs({}));
   }
 
   // Search methods
   searchByCategory(category: string) {
-    this.searchCategory.set(category);
-    this.loadJobs(1);
+    this.store.dispatch(JobsActions.searchByCategory({category}));
   }
 
   searchByLevel(level: string) {
-    this.searchLevel.set(level);
-    this.loadJobs(1);
+    this.store.dispatch(JobsActions.searchByLevel({level}));
   }
 
   searchByLocation(location: string) {
-    this.searchLocation.set(location);
-    this.loadJobs(1);
+    this.store.dispatch(JobsActions.searchByLocation({location}));
   }
 
   setSortOrder(descending: boolean) {
-    this.descending.set(descending);
-    this.loadJobs(this.currentPage()); // Keep current page
+    this.store.dispatch(JobsActions.setSortOrder({descending}));
   }
 
   clearSearch() {
-    this.searchCategory.set('');
-    this.searchLevel.set('');
-    this.searchLocation.set('');
-    this.descending.set(true);
-    this.loadJobs(1);
+    this.store.dispatch(JobsActions.clearFilters());
+    this.store.dispatch(JobsActions.loadJobs({}));
   }
 
   onJobSelected(job: Job) {
-    this.selectedJob.set(job);
+    this.store.dispatch(JobsActions.selectJob({job}));
   }
 
   onPreviousPage() {
-    if (this.currentPage() > 1) {
-      this.loadJobs(this.currentPage() - 1);
-      this.scrollJobListToTop();
-    }
+    this.store.dispatch(JobsActions.previousPage());
   }
 
   onNextPage() {
-    if (this.currentPage() < this.totalPages()) {
-      this.loadJobs(this.currentPage() + 1);
-      this.scrollJobListToTop();
-    }
+    this.store.dispatch(JobsActions.nextPage());
   }
 
-
-  private scrollJobListToTop() {
-    setTimeout(() => {
-      const jobListElement = document.querySelector('.job-list-container');
-      if (jobListElement) {
-        jobListElement.scrollTop = 0;
-      }
-    });
+  refreshJobs() {
+    this.store.dispatch(JobsActions.loadJobs({}));
   }
+
 
 
 }

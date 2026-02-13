@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { Job } from "../../../core/models/job.model";
+import {booleanAttribute, Component, EventEmitter, Input, numberAttribute, Output} from '@angular/core';
+import {Job} from "../../../core/models/job.model";
 import {JobCard} from '../job-card/job-card';
 import {PaginationSimpleComponent} from '../../../shared/components/pagination/pagination';
 
@@ -13,12 +13,12 @@ import {PaginationSimpleComponent} from '../../../shared/components/pagination/p
   styleUrl: './job-list.css',
 })
 export class JobList {
-  @Input() jobs :Job[] = [];
+  @Input() jobs: Job[] | null = [];
   @Input() selectedJobId: string | null = null;
-  @Input() isLoading = false;
-  @Input() currentPage = 1;
-  @Input() totalPages = 0;
-  @Input() totalItems = 0;
+  @Input({transform: booleanAttribute}) isLoading = false;
+  @Input({transform: numberAttribute}) currentPage: number = 1;
+  @Input({transform: numberAttribute}) totalPages: number = 0;
+  @Input({transform: numberAttribute}) totalItems: number = 0;
 
   @Output() jobSelected = new EventEmitter<Job>();
   @Output() onPrevious = new EventEmitter<void>();
