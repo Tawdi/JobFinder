@@ -4,6 +4,7 @@ import {UiInput} from '../../../shared/components/ui-input/ui-input';
 import {UiButton} from '../../../shared/components/ui-button/ui-button';
 import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '../../../core/services/auth';
+import {ToastService} from '../../../core/services/toast';
 
 @Component({
   selector: 'app-login',
@@ -14,14 +15,15 @@ import {AuthService} from '../../../core/services/auth';
 })
 export class Login {
   form: any;
-  isLoading= signal<boolean>(false);
-  errorMessage= signal<string>("");
+  isLoading = signal<boolean>(false);
+  errorMessage = signal<string>("");
 
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService,
   ) {
 
     this.form = this.fb.group(
@@ -50,7 +52,8 @@ export class Login {
         next: (user) => {
           this.isLoading.set(false);
           console.log('Login successful:', user);
-          this.router.navigate(['/']);
+          this.router.navigate(['/profile']);
+          this.toast.show(`Welcome back, ${user.name}! `, 'success');
         },
         error: (error) => {
           this.isLoading.set(false);

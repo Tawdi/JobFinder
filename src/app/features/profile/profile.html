@@ -1,0 +1,36 @@
+<div class="bg-white p-8 rounded-xl border border-secondary/20 shadow-sm max-w-2xl mx-auto">
+
+  <h2 class="text-xl font-semibold text-primary mb-6">My Profile</h2>
+
+  <div class="space-y-6">
+
+    <div>
+      <label class="block text-sm font-medium text-secondary mb-2">Full Name</label>
+      <ui-input [(ngModel)]="user().name"></ui-input>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-secondary mb-2">Email</label>
+      <ui-input [(ngModel)]="user().email"></ui-input>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-secondary mb-2">Password</label>
+      <ui-input type="password" [(ngModel)]="user().password"></ui-input>
+    </div>
+
+  </div>
+
+  <div class="flex justify-between mt-8">
+
+    <ui-button variant="primary" (click)="save()">
+      Save Changes
+    </ui-button>
+
+    <ui-button variant="danger" class="" (click)="deleteAccount()">
+      Delete Account
+    </ui-button>
+
+  </div>
+
+</div>

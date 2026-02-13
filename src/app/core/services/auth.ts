@@ -115,4 +115,19 @@ export class AuthService {
     return 'jf_' + Math.random().toString(36).substring(2) + Date.now();
   }
 
+  /**
+   * Update User in localStorage
+   * @param user
+   */
+  updateLocalUser(user: User) {
+    const data = localStorage.getItem('authData');
+    if (!data) return;
+
+    const authData = JSON.parse(data);
+    authData.user = user;
+
+    localStorage.setItem('authData', JSON.stringify(authData));
+    this.user$.next(user);
+  }
+
 }
