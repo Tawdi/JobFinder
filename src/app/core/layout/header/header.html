@@ -12,17 +12,32 @@
     </a>
 
     <ul class="hidden md:flex items-center gap-6">
+
       <li><a routerLink="/jobs" class="hover:text-highlight">Jobs</a></li>
-      <li><a routerLink="/favorites" class="hover:text-highlight">Favorites</a></li>
-      <li><a routerLink="/applications" class="hover:text-highlight">Applications</a></li>
-      <li><a routerLink="/profile" class="hover:text-highlight">Profile</a></li>
-      <li>
-        <a routerLink="/login"
-           class="text-highlight font-semibold hover:text-white transition">
-          Login
-        </a>
-      </li>
+
+      @if (user()) {
+        <li><a routerLink="/favorites" class="hover:text-highlight">Favorites</a></li>
+        <li><a routerLink="/applications" class="hover:text-highlight">Applications</a></li>
+        <li><a routerLink="/profile" class="hover:text-highlight">Profile</a></li>
+
+        <li>
+          <button
+            (click)="logout()"
+            class="text-red-300 font-semibold hover:text-white transition">
+            Logout
+          </button>
+        </li>
+      } @else {
+        <li>
+          <a routerLink="/login"
+             class="text-highlight font-semibold hover:text-white transition">
+            Login
+          </a>
+        </li>
+      }
+
     </ul>
+
 
     <!-- Mobile Hamburger -->
     <button class="md:hidden text-light focus:outline-none " (click)="mobileOpen = !mobileOpen">
@@ -43,14 +58,14 @@
     </button>
 
 
-
-
   </nav>
 
   <!-- Mobile Menu -->
   @if (mobileOpen) {
+
     <div class="md:hidden bg-primary text-light border-t border-secondary animate-fade-in">
       <ul class="flex flex-col py-2">
+
         <li>
           <a routerLink="/jobs"
              (click)="mobileOpen = false"
@@ -59,41 +74,55 @@
           </a>
         </li>
 
-        <li>
-          <a routerLink="/favorites"
-             (click)="mobileOpen = false"
-             class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
-            Favorites
-          </a>
-        </li>
+        @if (user()) {
 
-        <li>
-          <a routerLink="/applications"
-             (click)="mobileOpen = false"
-             class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
-            Applications
-          </a>
-        </li>
+          <li>
+            <a routerLink="/favorites"
+               (click)="mobileOpen = false"
+               class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
+              Favorites
+            </a>
+          </li>
 
-        <li>
-          <a routerLink="/profile"
-             (click)="mobileOpen = false"
-             class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
-            Profile
-          </a>
-        </li>
+          <li>
+            <a routerLink="/applications"
+               (click)="mobileOpen = false"
+               class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
+              Applications
+            </a>
+          </li>
 
-        <li>
-          <a routerLink="/login"
-             (click)="mobileOpen = false"
-             class="block w-full px-6 py-3 text-highlight font-semibold hover:bg-secondary/20 hover:text-white transition rounded">
-            Login
-          </a>
-        </li>
+          <li>
+            <a routerLink="/profile"
+               (click)="mobileOpen = false"
+               class="block w-full px-6 py-3 hover:bg-secondary/20 hover:text-highlight transition rounded">
+              Profile
+            </a>
+          </li>
+
+          <li>
+            <button
+              (click)="logout(); mobileOpen = false"
+              class="block w-full text-left px-6 py-3 text-red-300 font-semibold hover:bg-secondary/20 hover:text-white transition rounded">
+              Logout
+            </button>
+          </li>
+
+        } @else {
+
+          <li>
+            <a routerLink="/login"
+               (click)="mobileOpen = false"
+               class="block w-full px-6 py-3 text-highlight font-semibold hover:bg-secondary/20 hover:text-white transition rounded">
+              Login
+            </a>
+          </li>
+
+        }
+
       </ul>
-
     </div>
-
   }
+
 
 </header>
