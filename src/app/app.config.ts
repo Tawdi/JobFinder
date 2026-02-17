@@ -9,6 +9,8 @@ import {JobsEffects} from './core/store/effects/jobs.effect';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {authInterceptor} from './core/interceptors/auth-interceptor';
+import {favoritesReducer} from './core/store/reducers/favorites.reducer';
+import {FavoritesEffects} from './core/store/effects/favorites.effect';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,8 +21,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideStore({
       jobs: jobsReducer,
+      favorites: favoritesReducer,
     }),
-    provideEffects(JobsEffects),
+    provideEffects([JobsEffects,FavoritesEffects]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
