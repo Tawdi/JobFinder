@@ -1,7 +1,7 @@
 // src/app/core/store/effects/favorites.effect.ts
 import {inject, Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {of} from 'rxjs';
+import {debounceTime, of} from 'rxjs';
 import {catchError, map, mergeMap, switchMap} from 'rxjs/operators';
 import * as FavoritesActions from '../actions/favorites.action';
 import {FavoritesService} from '../../services/favorites';
@@ -18,6 +18,7 @@ export class FavoritesEffects {
   loadFavorites$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FavoritesActions.loadFavorites),
+      debounceTime(300),
       mergeMap(({userId}) =>
         this.favoritesService.getFavorites(userId).pipe(
           map(favorites => FavoritesActions.loadFavoritesSuccess({favorites})),
@@ -37,6 +38,7 @@ export class FavoritesEffects {
   addFavorite$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FavoritesActions.addFavorite),
+      debounceTime(300),
       mergeMap(({favorite}) =>
         // First check if already exists
         this.favoritesService.checkFavoriteExists(favorite.userId, favorite.offerId).pipe(

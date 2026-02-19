@@ -44,7 +44,6 @@ export class JobCard  implements OnInit  {
       );
       this.isLoading$ = this.store.select(FavoritesSelectors.selectFavoritesLoading);
 
-      // Check if this job is in favorites
       this.store.dispatch(FavoritesActions.checkFavoriteStatus({
         userId: this.currentUser.id,
         offerId: this.job.id
@@ -62,13 +61,11 @@ export class JobCard  implements OnInit  {
     event.stopPropagation(); // Prevent card click
 
     if (!this.currentUser) {
-      // You might want to show a login toast/notification
       return;
     }
 
     this.isFavorite$.subscribe(isFavorite => {
       if (isFavorite) {
-        // Get the favorite ID and remove
         this.store.select(FavoritesSelectors.selectFavoriteId(this.job.id))
           .subscribe(favoriteId => {
             if (favoriteId) {
@@ -76,7 +73,6 @@ export class JobCard  implements OnInit  {
             }
           }).unsubscribe();
       } else {
-        // Add to favorites
         this.store.dispatch(FavoritesActions.addFavorite({
           favorite: {
             userId: this.currentUser!.id,
