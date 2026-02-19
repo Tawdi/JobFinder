@@ -1,8 +1,6 @@
 <div class="h-full flex flex-col job-list-container">
   @if (isLoading) {
-    <div class="flex items-center justify-center h-64">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-    </div>
+      <app-spinner/>
   } @else {
     <!-- Job list -->
     <div class="flex-1 overflow-y-auto pr-2 space-y-4">

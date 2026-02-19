@@ -3,7 +3,17 @@
   <h2 class="text-2xl font-bold mb-1">{{ job.title }}</h2>
   <p class="text-accent mb-4">{{ job.company }} • {{ job.location }}</p>
 
-  <ui-button variant="primary" size="md" class="mb-6">Apply Now</ui-button>
+  <div class="flex gap-2 mb-6 ">
+    <ui-button variant="primary" size="md" class>Apply Now</ui-button>
+
+    <ui-button variant="outline" size="md" class="">
+      <a
+        [href]="job.url"
+        target="_blank">
+        View Job
+      </a>
+    </ui-button>
+  </div>
 
   <h3 class="text-xl font-semibold mb-3">Job Details</h3>
 

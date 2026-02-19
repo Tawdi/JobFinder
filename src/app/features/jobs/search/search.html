@@ -51,10 +51,7 @@
       <div
         class="lg:col-span-2 h-full bg-white p-8 rounded-xl border border-secondary/20 shadow-sm flex items-center justify-center">
         @if (isLoading$ | async ) {
-          <div class="flex flex-col items-center gap-4">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            <p class="text-secondary">Loading jobs...</p>
-          </div>
+          <app-spinner/>
         } @else {
           <p class="text-secondary">Select a job to view details</p>
         }

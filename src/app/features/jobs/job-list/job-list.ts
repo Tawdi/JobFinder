@@ -2,12 +2,14 @@ import {booleanAttribute, Component, EventEmitter, Input, numberAttribute, Outpu
 import {Job} from "../../../core/models/job.model";
 import {JobCard} from '../job-card/job-card';
 import {PaginationSimpleComponent} from '../../../shared/components/pagination/pagination';
+import {Spinner} from '../../../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-job-list',
   imports: [
     JobCard,
-    PaginationSimpleComponent
+    PaginationSimpleComponent,
+    Spinner
   ],
   templateUrl: './job-list.html',
   styleUrl: './job-list.css',
