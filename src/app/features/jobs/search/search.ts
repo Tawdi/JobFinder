@@ -10,6 +10,7 @@ import {Job} from '../../../core/models/job.model';
 import {AppState} from '../../../core/store/reducers';
 import * as JobsActions from '../../../core/store/actions/jobs.action';
 import * as JobsSelectors from '../../../core/store/selectors/jobs.selector';
+import {Spinner} from '../../../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-search',
@@ -18,7 +19,8 @@ import * as JobsSelectors from '../../../core/store/selectors/jobs.selector';
     CommonModule,
     SearchFilters,
     JobList,
-    JobDetails
+    JobDetails,
+    Spinner
   ],
   templateUrl: './search.html',
   styleUrl: './search.css',

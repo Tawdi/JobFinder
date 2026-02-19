@@ -65,10 +65,9 @@
 
   <!-- Loading State -->
   @if (loading$ | async) {
-    <div class="flex flex-col items-center justify-center py-16">
-      <div class="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent"></div>
-      <p class="mt-4 text-gray-600">Loading your favorites...</p>
-    </div>
+    <app-spinner
+      content="Loading your favorites..."
+    />
   }
 
   <!-- Favorites Grid -->

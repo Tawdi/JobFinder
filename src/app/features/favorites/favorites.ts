@@ -11,6 +11,7 @@ import * as FavoritesSelectors from '../../core/store/selectors/favorites.select
 import { AuthService } from '../../core/services/auth';
 import {UiModal} from '../../shared/components/ui-modal/ui-modal';
 import {FavoriteCard} from './favorite-card/favorite-card';
+import {Spinner} from '../../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-favorites',
@@ -19,7 +20,8 @@ import {FavoriteCard} from './favorite-card/favorite-card';
     CommonModule,
     RouterLink,
     UiModal,
-    FavoriteCard
+    FavoriteCard,
+    Spinner
   ],
   templateUrl: './favorites.html',
   styleUrl: './favorites.css',
