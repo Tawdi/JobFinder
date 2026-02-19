@@ -4,13 +4,11 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideStore} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
-import {jobsReducer} from './core/store/reducers/jobs.reducer';
-import {JobsEffects} from './core/store/effects/jobs.effect';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {authInterceptor} from './core/interceptors/auth-interceptor';
-import {favoritesReducer} from './core/store/reducers/favorites.reducer';
-import {FavoritesEffects} from './core/store/effects/favorites.effect';
+import {effects} from './core/store/effects';
+import {reducers} from './core/store/reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,11 +17,8 @@ export const appConfig: ApplicationConfig = {
     ),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideStore({
-      jobs: jobsReducer,
-      favorites: favoritesReducer,
-    }),
-    provideEffects([JobsEffects,FavoritesEffects]),
+    provideStore(reducers),
+    provideEffects(effects),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
