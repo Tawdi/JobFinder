@@ -1,0 +1,143 @@
+<section class="applications-container container mx-auto px-4 py-8">
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-primary">My Applications</h1>
+    <div class="flex items-center justify-between mt-2">
+      <p class="text-gray-600">
+        @if (applicationsCount$ | async; as count) {
+          You made {{ count }} {{ count === 1 ? 'application' : 'applications' }}
+        }
+      </p>
+      <a
+        routerLink="/search"
+        class="text-primary hover:text-primary/80 flex items-center gap-1 transition"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Browse More Jobs</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Statistics Component -->
+  <app-application-stats
+    [totalCount]="(applicationsCount$ | async) || 0"
+    [pendingCount]="(pendingCount$ | async) || 0"
+    [acceptedCount]="(acceptedCount$ | async) || 0"
+    [rejectedCount]="(rejectedCount$ | async) || 0"
+    [activeFilter]="activeFilter"
+    (filterChange)="setFilter($event)"
+  />
+
+  <!-- Messages -->
+  @if (error$ | async; as error) {
+    <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clip-rule="evenodd" />
+        </svg>
+        <span>{{ error }}</span>
+      </div>
+      <button (click)="clearMessages()" class="text-red-600 hover:text-red-800">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  }
+
+  @if (success$ | async; as success) {
+    <div
+      class="mb-4 p-4 bg-green-50 border border-green-200 text-green-600 rounded-lg flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd" />
+        </svg>
+        <span>{{ success }}</span>
+      </div>
+      <button (click)="clearMessages()" class="text-green-600 hover:text-green-800">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading$ | async) {
+    <app-spinner content="Loading your applications..." />
+  }
+
+  <!-- Applications Grid -->
+  @if (!(loading$ | async)) {
+    @if ((applications$ | async)?.length === 0) {
+      <!-- Empty State -->
+      <div class="text-center py-16 bg-white rounded-lg shadow-sm border border-gray-100">
+        <div class="flex justify-center mb-4">
+          <svg class="w-24 h-24 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">No applications yet</h3>
+        <p class="text-gray-500 mb-6 max-w-md mx-auto">
+          Start tracking your job applications by clicking "Track this application" on job details.
+        </p>
+        <a
+          routerLink="/search"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <span>Browse Jobs</span>
+        </a>
+      </div>
+    } @else {
+      <!-- Applications Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (application of applications$ | async; track application.id) {
+          <app-application-card
+            [application]="application"
+            (editStatus)="openStatusModal($event)"
+            (editNotes)="openNotesModal($event)"
+            (remove)="openRemoveModal($event)"
+          />
+        }
+      </div>
+    }
+  }
+
+  <!-- Modals -->
+  <app-application-status-modal
+    [open]="showStatusModal"
+    [application]="selectedApplication"
+    (closed)="closeModals()"
+    (statusUpdated)="updateStatus($event)"
+  />
+
+  <app-application-notes-modal
+    [open]="showNotesModal"
+    [application]="selectedApplication"
+    (closed)="closeModals()"
+    (notesUpdated)="updateNotes($event)"
+  />
+
+  <app-application-remove-modal
+    [open]="showRemoveModal"
+    [application]="selectedApplication"
+    (closed)="closeModals()"
+    (confirmed)="removeApplication($event)"
+  />
+</section>
