@@ -1,4 +1,3 @@
-// src/app/core/store/selectors/jobs.selector.ts
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { JobsState } from '../reducers/jobs.reducer';
 
