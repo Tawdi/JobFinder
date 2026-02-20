@@ -75,8 +75,8 @@ export class Register {
     ).subscribe({
       next: (user) => {
         console.log('Registration successful:', user);
-        this.router.navigate(['/login']);
-        this.toast.show('Account created! You can login now.', 'success');
+        this.router.navigate(['/profile']);
+        this.toast.show(`Welcome , ${user.name}! `, 'success');
       },
       error: (error) => {
         this.errorMessage.set(error.message || 'Registration failed. Please try again.');

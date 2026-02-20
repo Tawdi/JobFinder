@@ -1,19 +1,83 @@
+<!-- src/app/features/jobs/job-details/job-details.html -->
 <div class="bg-white p-8 rounded-xl border border-secondary/20 shadow-sm h-[calc(100vh-20rem)] overflow-y-auto">
 
   <h2 class="text-2xl font-bold mb-1">{{ job.title }}</h2>
   <p class="text-accent mb-4">{{ job.company }} • {{ job.location }}</p>
 
-  <div class="flex gap-2 mb-6 ">
-    <ui-button variant="primary" size="md" class>Apply Now</ui-button>
+  <div class="flex gap-2 mb-6 flex-wrap">
+    <!-- Track Application Button - Only for authenticated users -->
+    @if (isAuthenticated) {
+      <ui-button
+        variant="secondary"
+        size="md"
+        [disabled]="(hasApplied$ | async) || (isLoading$ | async)!"
+        (click)="trackApplication()"
+      >
+        @if (isLoading$ | async) {
+          <span class="flex items-center gap-2">
+            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Tracking...</span>
+          </span>
+        } @else {
+          @if (hasApplied$ | async) {
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>Application Tracked ✓</span>
+            </span>
+          } @else {
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Track this application</span>
+            </span>
+          }
+        }
+      </ui-button>
+    }
 
-    <ui-button variant="outline" size="md" class="">
-      <a
-        [href]="job.url"
-        target="_blank">
-        View Job
+    <!-- Apply Now Button -->
+    <ui-button variant="primary" size="md">
+      <a [href]="job.url" target="_blank" class="flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+        <span>Apply Now</span>
+      </a>
+    </ui-button>
+
+    <!-- View Job Button -->
+    <ui-button variant="outline" size="md">
+      <a [href]="job.url" target="_blank" class="flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+        <span>View Job</span>
       </a>
     </ui-button>
   </div>
+
+  <!-- Application Status Message (if already tracked) -->
+  @if ((hasApplied$ | async) && !(isLoading$ | async)) {
+    <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>You are tracking this application. You can manage it in your <a routerLink="/applications" class="font-semibold underline hover:text-green-800">Applications page</a>.</span>
+      </div>
+    </div>
+  }
 
   <h3 class="text-xl font-semibold mb-3">Job Details</h3>
 

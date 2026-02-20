@@ -1,0 +1,61 @@
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+  <!-- Total Applications -->
+  <div class="bg-white p-5 rounded-xl border border-secondary/20 shadow-sm">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Total Applications</p>
+        <p class="text-2xl font-bold text-primary">{{ applicationsCount }}</p>
+      </div>
+      <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending -->
+  <div class="bg-white p-5 rounded-xl border border-secondary/20 shadow-sm">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Pending</p>
+        <p class="text-2xl font-bold text-yellow-600">{{ pendingCount }}</p>
+      </div>
+      <div class="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center">
+        <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accepted -->
+  <div class="bg-white p-5 rounded-xl border border-secondary/20 shadow-sm">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Accepted</p>
+        <p class="text-2xl font-bold text-green-600">{{ acceptedCount}}</p>
+      </div>
+      <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Favorites -->
+  <div class="bg-white p-5 rounded-xl border border-secondary/20 shadow-sm">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-gray-500">Favorites</p>
+        <p class="text-2xl font-bold text-red-500">{{ favoritesCount }}</p>
+      </div>
+      <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
+        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<ui-modal [open]="open" (closed)="close()">
+  <div modal-title>
+    <h2 class="text-xl font-semibold text-gray-800">Application Notes</h2>
+  </div>
+
+  <div modal-body>
+    @if (application) {
+      <div class="py-4">
+        <p class="text-gray-600 mb-4">
+          Add or edit notes for <span class="font-semibold">{{ application.title }}</span>
+        </p>
+
+        <textarea
+          [(ngModel)]="notesText"
+          rows="6"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+          placeholder="Add your notes here... (e.g., interview dates, contact information, follow-up dates)"
+        ></textarea>
+
+        <p class="text-sm text-gray-500 mt-2">
+          <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          These notes are private and only visible to you.
+        </p>
+      </div>
+    }
+  </div>
+
+  <div modal-footer>
+    <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+            (click)="close()">
+      Cancel
+    </button>
+    <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition ml-2"
+            (click)="saveNotes()">
+      Save Notes
+    </button>
+  </div>
+</ui-modal>

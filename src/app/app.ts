@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Layout} from './core/layout/layout';
 import {AuthService} from './core/services/auth';
-import {FavoritesActions} from './core/store/actions';
+import {ApplicationsActions, FavoritesActions} from './core/store/actions';
 import {Store} from '@ngrx/store';
 
 @Component({
@@ -24,6 +24,9 @@ export class App implements OnInit {
         this.store.dispatch(FavoritesActions.loadFavorites({
           userId: user.id
         }));
+        this.store.dispatch(ApplicationsActions.loadApplications({
+          userId: user.id
+        }))
       }
     });
   }

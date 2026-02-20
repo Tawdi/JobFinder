@@ -1,36 +1,252 @@
-<div class="bg-white p-8 rounded-xl border border-secondary/20 shadow-sm max-w-2xl mx-auto">
+<div class="max-w-4xl mx-auto px-4 py-8">
 
-  <h2 class="text-xl font-semibold text-primary mb-6">My Profile</h2>
-
-  <div class="space-y-6">
-
-    <div>
-      <label class="block text-sm font-medium text-secondary mb-2">Full Name</label>
-      <ui-input [(ngModel)]="user().name"></ui-input>
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium text-secondary mb-2">Email</label>
-      <ui-input [(ngModel)]="user().email"></ui-input>
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium text-secondary mb-2">Password</label>
-      <ui-input type="password" [(ngModel)]="user().password"></ui-input>
-    </div>
-
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-primary">My Profile</h1>
+    <p class="text-gray-600">Manage your account settings and view your activity</p>
   </div>
 
-  <div class="flex justify-between mt-8">
+  <!-- Stats Cards -->
+  <app-profile-stats
+    [applicationsCount]="(applicationsCount$|async) || 0"
+    [acceptedCount]="(acceptedCount$ |async)||0"
+    [pendingCount]="(pendingCount$ |async)||0"
+    [favoritesCount]="(favoritesCount$ |async)||0"
+  />
 
-    <ui-button variant="primary" (click)="save()">
-      Save Changes
-    </ui-button>
+  <!-- Profile Card -->
+  <div class="bg-white rounded-xl border border-secondary/20 shadow-sm overflow-hidden">
 
-    <ui-button variant="danger" class="" (click)="deleteAccount()">
-      Delete Account
-    </ui-button>
+    <!-- Profile Header with Avatar -->
+    <div class="bg-gradient-to-r from-primary to-primary/80 px-6 py-8">
+      <div class="flex items-center gap-6">
+        <div
+          class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-3xl font-bold text-primary shadow-lg">
+          {{ getInitials() }}
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-white">{{ user()?.name || 'User' }}</h2>
+          <p class="text-white/90">{{ user()?.email }}</p>
+          @if (user()?.createdAt) {
+            <p class="text-white/80 text-sm mt-1">Member since {{ formatDate(user()?.createdAt) }}</p>
+          }
+        </div>
+      </div>
+    </div>
 
+    <!-- Profile Form -->
+    <div class="p-6">
+
+      <!-- Name Field -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-sm font-medium text-gray-700">Full Name</label>
+          @if (!isEditing()['name']) {
+            <button (click)="toggleEdit('name')"
+                    class="text-sm text-primary hover:text-primary/80 flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+              </svg>
+              <span>Edit</span>
+            </button>
+          }
+        </div>
+
+        @if (isEditing()['name']) {
+          <div class="flex gap-2">
+            <ui-input [(ngModel)]="user().name" placeholder="Enter your full name" class="flex-1"/>
+            <button (click)="save()" class="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                    title="Save">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </button>
+            <button (click)="cancelEdit('name')"
+                    class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition" title="Cancel">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        } @else {
+          <div class="p-3 bg-gray-50 rounded-lg text-gray-800">
+            {{ user()?.name || 'Not set' }}
+          </div>
+        }
+      </div>
+
+      <!-- Email Field -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-sm font-medium text-gray-700">Email Address</label>
+          @if (!isEditing()['email']) {
+            <button (click)="toggleEdit('email')"
+                    class="text-sm text-primary hover:text-primary/80 flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+              </svg>
+              <span>Edit</span>
+            </button>
+          }
+        </div>
+
+        @if (isEditing()['email']) {
+          <div class="flex gap-2">
+            <ui-input [(ngModel)]="user().email" placeholder="Enter your email" class="flex-1"/>
+            <button (click)="save()" class="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                    title="Save">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </button>
+            <button (click)="cancelEdit('email')"
+                    class="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition" title="Cancel">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        } @else {
+          <div class="p-3 bg-gray-50 rounded-lg text-gray-800">
+            {{ user()?.email }}
+          </div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-sm font-medium text-gray-700">Password</label>
+          @if (!isEditing()['password']) {
+            <button (click)="toggleEdit('password')"
+                    class="text-sm text-primary hover:text-primary/80 flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+              </svg>
+              <span>Change</span>
+            </button>
+          }
+        </div>
+
+        @if (isEditing()['password']) {
+          <div class="space-y-3">
+            <ui-input
+              type="password"
+              [(ngModel)]="currentPassword"
+              placeholder="Current password"
+            />
+            <ui-input
+              type="password"
+              [(ngModel)]="newPassword"
+              placeholder="New password (min. 6 characters)"
+            />
+            <ui-input
+              type="password"
+              [(ngModel)]="confirmPassword"
+              placeholder="Confirm new password"
+            />
+
+            @if (newPassword() && confirmPassword() && newPassword() !== confirmPassword()) {
+              <p class="text-sm text-red-500">Passwords do not match</p>
+            }
+            @if (newPassword() && newPassword().length < 6) {
+              <p class="text-sm text-red-500">Password must be at least 6 characters</p>
+            }
+
+            <div class="flex gap-2 pt-2">
+              <ui-button variant="primary" (click)="changePassword()" [disabled]="!passwordMatch()">
+                Update Password
+              </ui-button>
+              <ui-button variant="outline"
+                         (click)="toggleEdit('password'); currentPassword.set(''); newPassword.set(''); confirmPassword.set('')">
+                Cancel
+              </ui-button>
+            </div>
+          </div>
+        } @else {
+          <div class="p-3 bg-gray-50 rounded-lg text-gray-800">
+            ••••••••
+          </div>
+        }
+      </div>
+
+      <!-- Save Changes Button (only shows if changes exist) -->
+      @if (hasChanges()) {
+        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+          <div class="flex items-center gap-2 text-blue-700">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>You have unsaved changes</span>
+          </div>
+          <ui-button variant="primary" (click)="save()" size="sm">
+            Save All Changes
+          </ui-button>
+        </div>
+      }
+    </div>
   </div>
 
+  <!-- Quick Actions -->
+  <app-profile-quick-actions/>
+
+  <!-- Danger Zone -->
+  <div class="mt-8 bg-white rounded-xl border border-red-200 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 bg-red-50 border-b border-red-200">
+      <h3 class="text-lg font-semibold text-red-600 flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        Danger Zone
+      </h3>
+    </div>
+    <div class="p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="font-medium text-gray-800">Delete Account</p>
+          <p class="text-sm text-gray-500">Permanently delete your account and all associated data</p>
+        </div>
+        <ui-button variant="outline-danger" (click)="confirmDelete()">
+          Delete Account
+        </ui-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <ui-modal [open]="showDeleteModal" (closed)="cancelDelete()">
+    <div modal-title>
+      <h2 class="text-xl font-semibold text-red-600">Delete Account</h2>
+    </div>
+
+    <div modal-body>
+      <div class="py-4">
+        <p class="text-gray-600 mb-4">
+          Are you absolutely sure you want to delete your account?
+        </p>
+        <div class="p-4 bg-red-50 rounded-lg border border-red-200">
+          <p class="text-sm text-red-700">
+            <span class="font-semibold">Warning:</span> This action cannot be undone. All your data including
+            applications, favorites, and profile information will be permanently deleted.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div modal-footer>
+      <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+              (click)="cancelDelete()">
+        Cancel
+      </button>
+      <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition ml-2"
+              (click)="deleteAccount()">
+        Yes, Delete My Account
+      </button>
+    </div>
+  </ui-modal>
 </div>

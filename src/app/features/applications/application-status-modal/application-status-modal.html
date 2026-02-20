@@ -1,0 +1,62 @@
+<ui-modal [open]="open" (closed)="close()">
+  <div modal-title>
+    <h2 class="text-xl font-semibold text-gray-800">Update Application Status</h2>
+  </div>
+
+  <div modal-body>
+    @if (application) {
+      <div class="py-4">
+        <p class="text-gray-600 mb-4">
+          Update status for <span class="font-semibold">{{ application.title }}</span>
+          at <span class="font-semibold">{{ application.company }}</span>
+        </p>
+
+        <div class="space-y-3">
+          <!-- Pending -->
+          <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+                 [class.border-yellow-500]="selectedStatus === 'pending'">
+            <input type="radio" name="status" value="pending"
+                   [(ngModel)]="selectedStatus" class="w-4 h-4 text-yellow-500">
+            <div>
+              <p class="font-medium">En attente</p>
+              <p class="text-sm text-gray-500">Application sent, waiting for response</p>
+            </div>
+          </label>
+
+          <!-- Accepted -->
+          <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+                 [class.border-green-500]="selectedStatus === 'accepted'">
+            <input type="radio" name="status" value="accepted"
+                   [(ngModel)]="selectedStatus" class="w-4 h-4 text-green-500">
+            <div>
+              <p class="font-medium">Acceptée</p>
+              <p class="text-sm text-gray-500">Got an interview or job offer</p>
+            </div>
+          </label>
+
+          <!-- Rejected -->
+          <label class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+                 [class.border-red-500]="selectedStatus === 'rejected'">
+            <input type="radio" name="status" value="rejected"
+                   [(ngModel)]="selectedStatus" class="w-4 h-4 text-red-500">
+            <div>
+              <p class="font-medium">Refusée</p>
+              <p class="text-sm text-gray-500">Application was rejected</p>
+            </div>
+          </label>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div modal-footer>
+    <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+            (click)="close()">
+      Cancel
+    </button>
+    <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition ml-2"
+            (click)="updateStatus()">
+      Update Status
+    </button>
+  </div>
+</ui-modal>

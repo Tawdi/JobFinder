@@ -1,0 +1,41 @@
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+  <!-- Total -->
+  <div
+    class="bg-white p-4 rounded-lg shadow-sm border cursor-pointer transition hover:shadow-md"
+    [class.border-primary]="activeFilter === 'all'"
+    (click)="setFilter('all')"
+  >
+    <p class="text-gray-600 text-sm">Total Applications</p>
+    <p class="text-2xl font-bold text-primary">{{ totalCount }}</p>
+  </div>
+
+  <!-- Pending -->
+  <div
+    class="bg-white p-4 rounded-lg shadow-sm border cursor-pointer transition hover:shadow-md"
+    [class.border-yellow-500]="activeFilter === 'pending'"
+    (click)="setFilter('pending')"
+  >
+    <p class="text-gray-600 text-sm">En attente</p>
+    <p class="text-2xl font-bold text-yellow-600">{{ pendingCount }}</p>
+  </div>
+
+  <!-- Accepted -->
+  <div
+    class="bg-white p-4 rounded-lg shadow-sm border cursor-pointer transition hover:shadow-md"
+    [class.border-green-500]="activeFilter === 'accepted'"
+    (click)="setFilter('accepted')"
+  >
+    <p class="text-gray-600 text-sm">Acceptées</p>
+    <p class="text-2xl font-bold text-green-600">{{ acceptedCount }}</p>
+  </div>
+
+  <!-- Rejected -->
+  <div
+    class="bg-white p-4 rounded-lg shadow-sm border cursor-pointer transition hover:shadow-md"
+    [class.border-red-500]="activeFilter === 'rejected'"
+    (click)="setFilter('rejected')"
+  >
+    <p class="text-gray-600 text-sm">Refusées</p>
+    <p class="text-2xl font-bold text-red-600">{{ rejectedCount }}</p>
+  </div>
+</div>

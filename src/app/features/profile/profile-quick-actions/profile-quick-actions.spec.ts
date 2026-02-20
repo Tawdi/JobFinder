@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaginationSimpleComponent as Pagination } from './pagination';
+import { ProfileQuickActions } from './profile-quick-actions';
 
-describe('Pagination', () => {
-  let component: Pagination;
-  let fixture: ComponentFixture<Pagination>;
+describe('ProfileQuickActions', () => {
+  let component: ProfileQuickActions;
+  let fixture: ComponentFixture<ProfileQuickActions>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Pagination]
+      imports: [ProfileQuickActions]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Pagination);
+    fixture = TestBed.createComponent(ProfileQuickActions);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,0 +1,33 @@
+<ui-modal [open]="open" (closed)="close()">
+  <div modal-title>
+    <h2 class="text-xl font-semibold text-red-600">Confirm Removal</h2>
+  </div>
+
+  <div modal-body>
+    @if (application) {
+      <div class="py-4">
+        <p class="text-gray-600">
+          Are you sure you want to remove this application from your tracking?
+        </p>
+        <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <p class="font-medium text-gray-800">{{ application.title }}</p>
+          <p class="text-sm text-gray-600 mt-1">{{ application.company }}</p>
+        </div>
+        <p class="text-sm text-red-500 mt-4">
+          This action cannot be undone.
+        </p>
+      </div>
+    }
+  </div>
+
+  <div modal-footer>
+    <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+            (click)="close()">
+      Cancel
+    </button>
+    <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition ml-2"
+            (click)="confirmRemove()">
+      Yes, Remove
+    </button>
+  </div>
+</ui-modal>

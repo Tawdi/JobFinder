@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaginationSimpleComponent as Pagination } from './pagination';
+import { ApplicationRemoveModal } from './application-remove-modal';
 
-describe('Pagination', () => {
-  let component: Pagination;
-  let fixture: ComponentFixture<Pagination>;
+describe('ApplicationRemoveModal', () => {
+  let component: ApplicationRemoveModal;
+  let fixture: ComponentFixture<ApplicationRemoveModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Pagination]
+      imports: [ApplicationRemoveModal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Pagination);
+    fixture = TestBed.createComponent(ApplicationRemoveModal);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,3 +1,3 @@
-// export * from './jobs.selector';
-// export * from './favorites.selector';
-// export * from './applications.selector';
+export * from './jobs.selector';
+export * as FavoritesSelectors from './favorites.selector';
+export * as ApplicationsSelectors from './applications.selector';

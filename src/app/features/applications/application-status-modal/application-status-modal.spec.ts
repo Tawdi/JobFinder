@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaginationSimpleComponent as Pagination } from './pagination';
+import { ApplicationStatusModal } from './application-status-modal';
 
-describe('Pagination', () => {
-  let component: Pagination;
-  let fixture: ComponentFixture<Pagination>;
+describe('ApplicationStatusModal', () => {
+  let component: ApplicationStatusModal;
+  let fixture: ComponentFixture<ApplicationStatusModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Pagination]
+      imports: [ApplicationStatusModal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Pagination);
+    fixture = TestBed.createComponent(ApplicationStatusModal);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
